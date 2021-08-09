@@ -60,7 +60,7 @@ public class Login {
         Assert.assertEquals("Bem vindo, Luiz!", result);
     }
 
-    private void accessAccount(String user,String password){
+    public void accessAccount(String user,String password){
         WebElement inputEmail = driver.findElement(By.id("email"));
         inputEmail.sendKeys(user);
 

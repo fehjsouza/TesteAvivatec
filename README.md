@@ -24,7 +24,7 @@ Testes desenvolvidos para Avivatec utilizando
 
 ![image info](https://github.com/fehjsouza/TesteAvivatec/blob/master/src/test/resources/screenShots/Validacao.png)
 
-## Setup and run
+##  Executar Projeto
 
 ```powershell
 git clone https://github.com/fehjsouza/TesteAvivatec

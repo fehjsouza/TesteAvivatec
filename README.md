@@ -20,6 +20,7 @@ Testes desenvolvidos para Avivatec utilizando
 - Delete account one
 - Access with invalid password
 - Access the registered user
+![image info](https://github.com/fehjsouza/TesteAvivatec/blob/master/src/test/resources/screenShots/Validacao.png)
 
 ## Setup and run
 

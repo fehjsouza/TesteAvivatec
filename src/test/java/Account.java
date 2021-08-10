@@ -1,3 +1,4 @@
+import helpers.ScreenShot;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -20,8 +21,6 @@ public class Account {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")
                 + "/src/test/resources/chromedriver");
 
-        System.setProperty("webdriver.chrome.whitelistedIps", "");
-
         driver = new ChromeDriver();
     }
 
@@ -40,31 +39,37 @@ public class Account {
 
     @When("^the user fill the fields")
     public void whenStatement(){
-        fillRegisterform(true);
+        fillRegisterForm(true);
     }
 
     @Then("^account should be create with success")
-    public void thenStatement(){
+    public void thenStatement() throws Exception {
         WebElement msgSuccess = driver.findElement(By.xpath("/html/body/div[1]"));
         String result = msgSuccess.getText();
+
+        ScreenShot.takeSnapShot(driver, System.getProperty("user.dir")
+                + "/src/test/resources/screenShots/");
 
         Assert.assertEquals("Usuário inserido com sucesso", result);
     }
 
     @When("^the user fill the email field with a value already registered")
     public void whenStatementError(){
-        fillRegisterform(false);
+        fillRegisterForm(false);
     }
 
     @Then("^account should not be create and raise a message error")
-    public void thenStatementError(){
+    public void thenStatementError() throws Exception {
         WebElement msgSuccess = driver.findElement(By.xpath("/html/body/div[1]"));
         String result = msgSuccess.getText();
+
+        ScreenShot.takeSnapShot(driver, System.getProperty("user.dir")
+                + "/src/test/resources/screenShots/");
 
         Assert.assertEquals("Endereço de email já utilizado", result);
     }
 
-    private void fillRegisterform(boolean generateEmail) {
+    private void fillRegisterForm(boolean generateEmail) {
         String email = "Luiz@souza";
 
         if (generateEmail) {
@@ -82,7 +87,4 @@ public class Account {
         WebElement btnCadastrar = driver.findElement(By.xpath("/html/body/div[2]/form/input"));
         btnCadastrar.click();
     }
-
 }
-
-

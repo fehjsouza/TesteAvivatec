@@ -1,3 +1,4 @@
+import helpers.ScreenShot;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -9,15 +10,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class Createeditdelete {
+import java.util.UUID;
+
+public class Crud {
     WebDriver driver;
 
     @Before
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")
                 + "/src/test/resources/chromedriver");
-
-        System.setProperty("webdriver.chrome.whitelistedIps", "");
 
         driver = new ChromeDriver();
     }
@@ -33,12 +34,12 @@ public class Createeditdelete {
     public void access_the_site_with_correct_login() {
         driver.get("http://seubarriga.wcaquino.me/login");
 
+        Login login = new Login();
+        login.accessAccount("Luiz@souza", "Felipe123", driver);
     }
 
-    @When("accessing the accounts tab create an Account called {int}")
-    public void accessing_the_accounts_tab_create_an_Account_called(Integer int1) {
-
-        accessAccount("feh_jsouza@hotmail.com", "Felipe123");
+    @When("accessing the accounts tab create an Account")
+    public void accessing_the_accounts_tab_create_an_Account() {
 
         WebElement btnContas = driver.findElement(By.xpath("//*[@id=\"navbar\"]/ul/li[2]/a"));
         btnContas.click();
@@ -47,48 +48,44 @@ public class Createeditdelete {
         optAdicionar.click();
 
         WebElement inputName = driver.findElement(By.id("nome"));
-        inputName.sendKeys("Conta 1");
+        inputName.sendKeys("Conta" + UUID.randomUUID());
 
         WebElement btnSalvar = driver.findElement(By.xpath("/html/body/div[2]/form/div[2]/button"));
         btnSalvar.click();
-
     }
 
-    @Then("save account and wait for the message <message>")
-    public void save_account_and_wait_for_the_message_message() {
+    @Then("save account and wait for the message {string}")
+    public void save_account_and_wait_for_the_message(String message) throws Exception {
         WebElement msgSuccess = driver.findElement(By.xpath("/html/body/div[1]"));
         String result = msgSuccess.getText();
 
-        Assert.assertEquals("Conta adicionada com sucesso!", result);
+        ScreenShot.takeSnapShot(driver, System.getProperty("user.dir")
+                + "/src/test/resources/screenShots/");
+
+        Assert.assertEquals(message, result);
     }
 
-    @When("accessing the accounts tab edit an Account called {int}")
-    public void accessing_the_accounts_tab_edit_an_Account_called(Integer int1) {
+    @When("access the accounts page and edit the first item")
+    public void accessing_the_accounts_tab_edit_an_Account_created_previously() {
+
+        driver.get("http://seubarriga.wcaquino.me/contas");
 
         WebElement btnEdit = driver.findElement(By.xpath("//*[@id=\"tabelaContas\"]/tbody/tr/td[2]/a[1]/span"));
         btnEdit.click();
 
         WebElement inputName = driver.findElement(By.id("nome"));
-        inputName.sendKeys("Conta 2");
+        inputName.sendKeys("Edited");
 
         WebElement btnSalvar = driver.findElement(By.xpath("/html/body/div[2]/form/div[2]/button"));
         btnSalvar.click();
-
     }
 
-    @When("accessing the accounts tab delete an Account called {int}")
-    public void accessing_the_accounts_tab_delete_an_Account_called(Integer int1) {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
-    }
-    public void accessAccount(String user,String password){
-        WebElement inputEmail = driver.findElement(By.id("email"));
-        inputEmail.sendKeys(user);
+    @When("access the accounts page and delete the first item")
+    public void accessing_the_accounts_tab_delete_an_Account_called() {
 
-        WebElement inputSenha = driver.findElement(By.id("senha"));
-        inputSenha.sendKeys(password);
+        driver.get("http://seubarriga.wcaquino.me/contas");
 
-        WebElement btnEntrar = driver.findElement(By.xpath("/html/body/div[2]/form/button"));
-        btnEntrar.click();
+        WebElement btnEdit = driver.findElement(By.xpath("/html/body/table/tbody/tr[1]/td[2]/a[2]/span"));
+        btnEdit.click();
     }
 }

@@ -1,3 +1,4 @@
+import helpers.ScreenShot;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -17,8 +18,6 @@ public class Login {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")
                 + "/src/test/resources/chromedriver");
 
-        System.setProperty("webdriver.chrome.whitelistedIps", "");
-
         driver = new ChromeDriver();
     }
 
@@ -29,15 +28,19 @@ public class Login {
         }
     }
 
-    @When("the user logs in, he will have a problem with user login")
-    public void the_user_logs_in_he_will_have_a_problem_with_user_login() {
-        accessAccount("Luiz@souza","Felipe1990");
+    @When("the user logs in, will have a problem with user login")
+    public void the_user_logs_in_will_have_a_problem_with_user_login() {
+
+        accessAccount("Luiz@souza","Felipe1990", driver);
     }
 
     @Then("the password address incorrect")
-    public void the_password_address_incorrect() {
+    public void the_password_address_incorrect() throws Exception {
         WebElement msgSuccess = driver.findElement(By.xpath("/html/body/div[1]"));
         String result = msgSuccess.getText();
+
+        ScreenShot.takeSnapShot(driver, System.getProperty("user.dir")
+                + "/src/test/resources/screenShots/");
 
         Assert.assertEquals("Problemas com o login do usuário", result);
     }
@@ -47,20 +50,24 @@ public class Login {
         driver.get("http://seubarriga.wcaquino.me/login");
     }
 
-    @When("the user logs in, he will give a welcome message")
-    public void the_user_logs_in_he_will_give_a_welcome_message() {
-        accessAccount("Luiz@souza","Felipe123");
+    @When("the user logs in, will give a welcome message")
+    public void the_user_logs_in_will_give_a_welcome_message() {
+
+        accessAccount("Luiz@souza","Felipe123", driver);
     }
 
     @Then("the account must be logged in correctly with no errors")
-    public void the_account_must_be_logged_in_correctly_with_no_errors() {
+    public void the_account_must_be_logged_in_correctly_with_no_errors() throws Exception {
         WebElement msgSuccess = driver.findElement(By.xpath("/html/body/div[1]"));
         String result = msgSuccess.getText();
+
+        ScreenShot.takeSnapShot(driver, System.getProperty("user.dir")
+                + "/src/test/resources/screenShots/");
 
         Assert.assertEquals("Bem vindo, Luiz!", result);
     }
 
-    public void accessAccount(String user,String password){
+    public void accessAccount(String user,String password, WebDriver driver){
         WebElement inputEmail = driver.findElement(By.id("email"));
         inputEmail.sendKeys(user);
 
@@ -71,5 +78,3 @@ public class Login {
         btnEntrar.click();
     }
 }
-
-
